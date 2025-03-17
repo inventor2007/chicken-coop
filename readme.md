@@ -19,7 +19,7 @@ Pour installer et exécuter l'application, suivez les étapes ci-dessous :
 
 2. Accédez au répertoire du projet :
     ```bash
-    cd poulailler
+    cd chicken-coop
     ```
 
 3. Installez les dépendances :
