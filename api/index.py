@@ -1,4 +1,3 @@
-import RPi.GPIO as GPIO
 import time
 from gpiozero import LightSensor, Button, Servo
 from flask import Flask, jsonify, request
@@ -9,6 +8,7 @@ ldr = LightSensor(17)
 flotteur = Button(19)
 servo = Servo(16)
 porte_status = False
+auto_mode = False
 
 def detecter_lumiere():
     return ldr.light_detected
@@ -25,6 +25,44 @@ def fermer_porte():
     global porte_status
     servo.value = 0  # Fermer la porte
     porte_status = False
+
+@app.route('/allstats', methods=['GET'])
+def allstats():
+    try:
+        # Récupérer les états actuels des capteurs et de la porte
+        lumiere = detecter_lumiere()
+        flotteur = detecter_flotteur()
+        return jsonify({"lumiere_detectee": lumiere, "flotteur_active": flotteur, "porte_status": porte_status, "auto_mode": auto_mode}), 200
+    except Exception as e:
+        return jsonify({"erreur": str(e)}), 500
+
+@app.route('/automode', methods=['GET'])
+def status_automode():
+    try:
+        # Renvoyer l'état actuel du mode automatique
+        return jsonify({"auto_mode": auto_mode}), 200
+    except Exception as e:
+        return jsonify({"erreur": str(e)}), 500
+
+@app.route('/automode', methods=['POST'])
+def action_automode():
+    try:
+        # Récupérer l'action depuis les données JSON de la requête
+        data = request.get_json()
+        action = data.get("action")
+
+        if action == "activer":
+            global auto_mode
+            auto_mode = True
+            return jsonify({"message": "Mode automatique active", "auto_mode": auto_mode}), 200
+        elif action == "desactiver":
+            global auto_mode
+            auto_mode = False
+            return jsonify({"message": "Mode automatique desactive", "auto_mode": auto_mode}), 200
+        else:
+            return jsonify({"erreur": "Action invalide"}), 400
+    except Exception as e:
+        return jsonify({"erreur": str(e)}), 500
 
 @app.route('/lumiere', methods=['GET'])
 def lumiere():
@@ -75,8 +113,4 @@ def action_porte():
         return jsonify({"erreur": str(e)}), 500
 
 if __name__ == '__main__':
-    try:
-        # Démarrage du serveur Flask sur le port 5000
-        app.run(host='0.0.0.0', port=5000)
-    except KeyboardInterrupt:
-        GPIO.cleanup()  # Nettoyer les GPIO lorsque le programme est interrompu
+    app.run(host='0.0.0.0', port=5000)

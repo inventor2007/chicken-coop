@@ -1,9 +1,7 @@
 "use client";
 
-import { useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { 
@@ -38,13 +36,13 @@ export default function Dashboard() {
             <CardContent>
               <div className="space-y-4">
                 <div className="flex items-center gap-4">
-                  {state.water.level > 50 ? (
+                  {state?.water?.level > 50 ? (
                     <CheckCircle2 className="h-8 w-8 text-green-500" />
                   ) : (
                     <AlertTriangle className="h-8 w-8 text-yellow-500" />
                   )}
                   <span className="text-xl">
-                    {state.water.level > 50 ? "Niveau suffisant" : "Niveau bas"}
+                    {state?.water?.level > 50 ? "Niveau suffisant" : "Niveau bas"}
                   </span>
                 </div>
               </div>
@@ -154,48 +152,6 @@ export default function Dashboard() {
                 </div>
 
                 <div className="space-y-8">
-                  {/* Seuil jour */}
-                  <div className="space-y-4">
-                    <Label className="flex items-center gap-2">
-                      <Sun className="h-4 w-4" />
-                      Seuil de luminosité - Jour
-                    </Label>
-                    <Slider
-                      value={[state.light.dayThreshold]}
-                      onValueChange={([value]) => actions.updateLightThresholds('day', value)}
-                      max={100}
-                      step={1}
-                      disabled={!state.light.autoMode}
-                      className="cursor-pointer"
-                    />
-                    <div className="flex justify-between text-sm text-muted-foreground">
-                      <span>Sombre</span>
-                      <span>{state.light.dayThreshold}%</span>
-                      <span>Lumineux</span>
-                    </div>
-                  </div>
-
-                  {/* Seuil nuit */}
-                  <div className="space-y-4">
-                    <Label className="flex items-center gap-2">
-                      <Moon className="h-4 w-4" />
-                      Seuil de luminosité - Nuit
-                    </Label>
-                    <Slider
-                      value={[state.light.nightThreshold]}
-                      onValueChange={([value]) => actions.updateLightThresholds('night', value)}
-                      max={100}
-                      step={1}
-                      disabled={!state.light.autoMode}
-                      className="cursor-pointer"
-                    />
-                    <div className="flex justify-between text-sm text-muted-foreground">
-                      <span>Sombre</span>
-                      <span>{state.light.nightThreshold}%</span>
-                      <span>Lumineux</span>
-                    </div>
-                  </div>
-
                   {/* Valeur actuelle */}
                   <div className="space-y-4">
                     <Label className="flex items-center gap-2">
