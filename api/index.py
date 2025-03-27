@@ -1,8 +1,10 @@
 import time
 from gpiozero import LightSensor, Button, Servo
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)  # Activer CORS sur toutes les routes
 
 ldr = LightSensor(17)
 flotteur = Button(19)
