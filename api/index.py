@@ -26,6 +26,14 @@ def fermer_porte():
     servo.value = 0  # Fermer la porte
     porte_status = False
 
+def set_automode(mode):
+    global auto_mode
+    auto_mode = mode
+
+def get_automode():
+    return auto_mode
+
+
 @app.route('/allstats', methods=['GET'])
 def allstats():
     try:
@@ -52,12 +60,10 @@ def action_automode():
         action = data.get("action")
 
         if action == "activer":
-            global auto_mode
-            auto_mode = True
+            set_automode(True)
             return jsonify({"message": "Mode automatique active", "auto_mode": auto_mode}), 200
         elif action == "desactiver":
-            global auto_mode
-            auto_mode = False
+            set_automode(False)
             return jsonify({"message": "Mode automatique desactive", "auto_mode": auto_mode}), 200
         else:
             return jsonify({"erreur": "Action invalide"}), 400
