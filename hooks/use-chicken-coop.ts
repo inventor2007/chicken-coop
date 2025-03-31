@@ -158,19 +158,9 @@ export const useChickenCoop = () => {
 
   // Simulation des mises à jour automatiques
   useEffect(() => {
-    const interval = setInterval(() => {
-      setState(prev => ({
-        ...prev,
-        water: { level: Math.floor(Math.random() * 100) },
-        food: {
-          weight: Math.floor(Math.random() * 100),
-          percentage: Math.floor(Math.random() * 100),
-        },
-        light: {
-          ...prev.light,
-          current: Math.floor(Math.random() * 100),
-        },
-      }));
+    const interval = setInterval(async () => {
+      const updatedState = await getInitialState(); // Appel à l'API pour récupérer les données
+      setState(updatedState); // Mise à jour de l'état avec les données réelles
     }, 5000);
 
     return () => clearInterval(interval);
