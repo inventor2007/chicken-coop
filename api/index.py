@@ -1,4 +1,4 @@
-from gpiozero import LightSensor, Button, Servo
+from gpiozero import LightSensor, Button, Servo, AngularServo
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 
@@ -7,7 +7,7 @@ CORS(app)  # Activer CORS sur toutes les routes
 
 ldr = LightSensor(17)
 flotteur = Button(19)
-servo = Servo(16)
+servo = AngularServo(16)
 porte_status = False
 auto_mode = False
 
@@ -19,12 +19,12 @@ def detecter_flotteur():
 
 def ouvrir_porte():
     global porte_status
-    servo.value = 0.5  # Ouvrir la porte
+    servo.angle = 30  # Ouvrir la porte
     porte_status = True
 
 def fermer_porte():
     global porte_status
-    servo.value = 0  # Fermer la porte
+    servo.angle = 0  # Fermer la porte
     porte_status = False
 
 def set_automode(mode):
