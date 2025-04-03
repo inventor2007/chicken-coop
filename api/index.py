@@ -11,7 +11,7 @@ flotteur = Button(19)
 servo = AngularServo(16)
 porte_status = False
 auto_mode = False
-servo.value = 0  # Position initiale du servo
+servo.detach()
 
 def detecter_lumiere():
     return ldr.light_detected
@@ -25,6 +25,7 @@ def ouvrir_porte():
     time.sleep(1)  # Ajustez le délai en fonction de votre matériel
     servo.value = 0  # Arrêter le servo
     porte_status = True
+    servo.detach()
 
 def fermer_porte():
     global porte_status
@@ -32,6 +33,7 @@ def fermer_porte():
     time.sleep(1)  # Ajustez le délai en fonction de votre matériel
     servo.value = 0  # Arrêter le servo
     porte_status = False
+    servo.detach()
 
 def set_automode(mode):
     global auto_mode

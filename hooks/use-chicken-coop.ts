@@ -18,7 +18,7 @@ interface ChickenCoopState {
 }
 
 const STORAGE_KEY = 'chicken-coop-state';
-const API_BASE_URL = 'http://127.0.0.1:5000'; // URL de base de l'API
+const API_BASE_URL = 'http://172.20.10.2:5000'; // URL de base de l'API
 
 // Données par défaut
 const defaultState: ChickenCoopState = {
